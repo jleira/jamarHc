@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS Serverless Spring Boot API - com.jamar::historia-credito-serverless-api
+Globals:
+  Api:
+    EndpointConfiguration: REGIONAL
+  Function:
+    Environment:
+      Variables:
+        PRODUCT_ENDPOINT_HOST: Production
+
+Resources:
+  HistoriaCreditoLambdaServerlessApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: com.jamar.hc.LambdaHandler::handleRequest
+      Runtime: java8
+      CodeUri: target/jamarhistoriadecredito-0.0.1-SNAPSHOT-lambda-package.zip
+      MemorySize: 4080
+      Policies: AWSLambdaBasicExecutionRole
+      Timeout: 240
+      Events:
+        ProxyResource:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: any
+      Environment:
+        Variables:
+          PRODUCT_ENDPOINT_HOST: "HOST"
+
+Outputs:
+  HistoriaCreditoLambdaServerlessApiApi:
+    Description: URL for application
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Dev/api'
+    Export:
+      Name: HistoriaCreditoLambdaServerlessApiApi
