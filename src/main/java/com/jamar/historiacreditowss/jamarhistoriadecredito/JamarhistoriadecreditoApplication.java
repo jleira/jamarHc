@@ -1,5 +1,6 @@
 package com.jamar.historiacreditowss.jamarhistoriadecredito;
 
+import com.jamar.hc.ClientPasswordCallback;
 import com.jamar.hc.ServiceHistorialController;
 import com.jamar.historiacreditowss.jamarhistoriadecredito.business.HistoriaCreditoJPA;
 import com.jamar.historiacreditowss.jamarhistoriadecredito.business.HistoriaCreditoService;
@@ -23,7 +24,8 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
     HistoriaCreditoService.class,
     HistoriaCreditoJPA.class,
     ServiceHistorialController.class,
-    JpaConfig.class
+    JpaConfig.class,
+    ClientPasswordCallback.class
 })
 @EnableWebMvc
 public class JamarhistoriadecreditoApplication extends SpringBootServletInitializer {

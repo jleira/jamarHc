@@ -9,6 +9,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,13 +37,21 @@ public class JpaConfig {
 	@Autowired
 	private Environment env;
 
+	@Value("${spring.datasource.username}")
+	public String username;
+
+	@Value("${spring.datasource.password}")
+	public String password;
+
+	@Value("${spring.datasource.driver-class-name}")
+	public String driverClass;
+
+	@Value("${spring.datasource.url}")
+	public String url;
+
+
 	@Bean
 	public DataSource dataSource() {
-
-		String username = env.getProperty("spring.datasource.username");
-		String password = env.getProperty("spring.datasource.password");
-		String driverClass = env.getProperty("spring.datasource.driver-class-name");
-		String url = env.getProperty("spring.datasource.url");
 
 		return DataSourceBuilder.create().username(username).password(password).url(url).driverClassName(driverClass)
 				.build();

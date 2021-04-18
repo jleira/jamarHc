@@ -48,13 +48,21 @@ import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.wss4j.dom.WSConstants;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
 @Service
 public class HistoriaCreditoService {
 
-    
+    @Value("${app.wss.signature_user}")
+    public String SIGNATURE_USER;
+    @Value("${app.wss.key_alias}")
+    public String KEY_ALIAS;
+
+    @Autowired
+    private ClientPasswordCallback clientPasswordCallback;
+
     @Autowired
     private HistoriaCreditoJPA historiaCreditoJpa;
     
@@ -62,7 +70,7 @@ public class HistoriaCreditoService {
     }
     
     public String dictum(DictumSolicitud jsonParams) {
-        System.out.println(" Params " +  new Gson().toJson(jsonParams));
+
         Mensaje msg = new Mensaje();
         
         JsonObject jsonResult = HistoriaCreditoHelper.dataValidateConsumodictum(jsonParams);
@@ -126,7 +134,6 @@ public class HistoriaCreditoService {
         if (jsonResult.get("success").getAsBoolean()) {
 
             Solicitud payload = new Solicitud();
-
 
             payload.setEmpresa(jsonParams.getC_emp());
             payload.setOrigen(jsonParams.getOrigen());
@@ -238,7 +245,7 @@ public class HistoriaCreditoService {
         return mensaje; 
     }
     
-    public static Informes getInformesFromXMLFile(String path) {
+    public Informes getInformesFromXMLFile(String path) {
         Informes informes = new Informes();
         try {
             File file = new File(path);
@@ -251,7 +258,7 @@ public class HistoriaCreditoService {
         return informes;
     }
     
-    public static Informes getInformesFromService(Solicitud payload) throws RemoteException, JAXBException, Exception {
+    public Informes getInformesFromService(Solicitud payload) throws RemoteException, JAXBException, Exception {
           
         String response = consumirHC(payload);        
         JAXBContext jaxbContext = JAXBContext.newInstance(Informes.class);
@@ -272,19 +279,15 @@ public class HistoriaCreditoService {
         return auditoria;
     }
     
-    public static String consumirHC(Solicitud payload) throws HC2PNJException, FileNotFoundException {
-        //String propertistring = "/u01/ssl/certificate/datacredito/hc/crypto.properties";
+    public String consumirHC(Solicitud payload) throws HC2PNJException, FileNotFoundException {
+        System.out.println("VARIABLE USUARIO"+SIGNATURE_USER);
+        System.out.println("VARIABLE ALIAS"+KEY_ALIAS);
         String propertistring = ResourceUtils.getFile("classpath:crypto/crypto.properties").getAbsolutePath();
-
         JaxWsProxyFactoryBean wsProxyFactoryBean = new JaxWsProxyFactoryBean();
-        //        wsProxyFactoryBean.setAddress("https://demo-servicesesb.datacredito.com.co:443/wss/dhws3/services/DHServicePlus");
-
         wsProxyFactoryBean.setAddress(payload.getENDPOINT());
         wsProxyFactoryBean.setServiceClass(HC2PNJService.class);
         Object client = wsProxyFactoryBean.create();
 
-        // Loggers parar mostrar en consola la entrada y salida de la conexión con el
-        // servicio web
         LoggingInInterceptor loggingInInterceptor = new LoggingInInterceptor();
         LoggingOutInterceptor loggingOutInterceptor = new LoggingOutInterceptor();
         loggingInInterceptor.setPrettyLogging(false);
@@ -294,13 +297,12 @@ public class HistoriaCreditoService {
         ClientProxy.getClient(client).getOutInterceptors().add(loggingOutInterceptor);
         // WS-Security properties
         Map<String, Object> propsOut = new HashMap<>();
-        propsOut.put(WSHandlerConstants.USER, "2-900461448.001");
+        propsOut.put(WSHandlerConstants.USER, SIGNATURE_USER);
 
-//        propsOut.put(WSHandlerConstants.USER, payload.getUsuario());
         propsOut.put(WSHandlerConstants.ACTION, WSHandlerConstants.USERNAME_TOKEN + " "
                 + WSHandlerConstants.TIMESTAMP + " " + WSHandlerConstants.SIGNATURE);
         propsOut.put(WSHandlerConstants.SIG_PROP_FILE, propertistring);
-        propsOut.put(WSHandlerConstants.SIGNATURE_USER, "1");//deberia ser mueblesjamar
+        propsOut.put(WSHandlerConstants.SIGNATURE_USER, KEY_ALIAS);//deberia ser mueblesjamar
         propsOut.put(WSHandlerConstants.ADD_USERNAMETOKEN_NONCE, "true");
         propsOut.put(WSHandlerConstants.ADD_USERNAMETOKEN_CREATED, "true");
         propsOut.put(WSHandlerConstants.MUST_UNDERSTAND, "false");
@@ -310,7 +312,7 @@ public class HistoriaCreditoService {
         propsOut.put(WSHandlerConstants.SIG_KEY_ID, KEY_IDENTIFIER_TYPE);
         propsOut.put(WSHandlerConstants.SIG_ALGO, "http://www.w3.org/2000/09/xmldsig#rsa-sha1");
         propsOut.put(WSHandlerConstants.PASSWORD_TYPE, WSConstants.PW_TEXT);
-        propsOut.put(WSHandlerConstants.PW_CALLBACK_REF, new ClientPasswordCallback());
+        propsOut.put(WSHandlerConstants.PW_CALLBACK_REF, clientPasswordCallback);
 
         WSS4JOutInterceptor wss4jOutInterceptor = new WSS4JOutInterceptor(propsOut);
         ClientProxy.getClient(client).getOutInterceptors().add(wss4jOutInterceptor);
@@ -370,32 +372,6 @@ public class HistoriaCreditoService {
         serviceparams.setTipoIdentificacion(Integer.toString(payload.getTipoIdentificacion()));
         serviceparams.setUsuario(payload.getUsuario());
 
-        /*        Parametro parametro = new Parametro();
-        parametro.setNombre("STRAID");
-        parametro.setTipo("T");
-        parametro.setValor(jsonParams.get("STRAID").getAsString());//"24896"
-
-        Parametro parametro2 = new Parametro();
-        parametro2.setNombre("STRNAM");
-        parametro2.setTipo("T");
-        parametro2.setValor(jsonParams.get("STRNAM").getAsString());//"Preselecta_Credijamar"
-
-        Parametro parametro3 = new Parametro();
-        parametro3.setNombre("INGRESO");
-        parametro3.setTipo("T");
-        parametro3.setValor(jsonParams.get("INGRESO").getAsString());//5000000
-
-        Parametro parametro4 = new Parametro();
-        parametro4.setNombre("NOMBRE_PRODUCTO");
-        parametro4.setTipo("T");
-        parametro4.setValor(jsonParams.get("NOMBRE_PRODUCTO").getAsString());//CREDIYA
-
-        Parametros parametros = new Parametros();
-        parametros.getParametro().add(parametro);
-        parametros.getParametro().add(parametro2);
-        parametros.getParametro().add(parametro3);
-        parametros.getParametro().add(parametro4);*/
-//        System.out.println(jsonParams);
         HC2PNJService mService = (HC2PNJService) client;
         return mService.consultarHC2(serviceparams);
     }

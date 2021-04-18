@@ -7,8 +7,16 @@ Globals:
   Function:
     Environment:
       Variables:
-        PRODUCT_ENDPOINT_HOST: Production
-
+        PRODUCT_ENDPOINT_HOST: 2-900461448.001
+        SIGNATURE_USER: 2-900461448.001
+        KEY_ALIAS: 1 #mueblesjamar
+        SIGNATURE_PASS: D4t4cr3d1t0
+        KEY_PASS: Jamar01
+        DB_URL: 10.1.85.130
+        DB_USER: DATACREDITOWS
+        DB_PASSWORD: DATACREDITOWS
+        DB_PORT: 1521
+        DB_SID: orcl
 Resources:
   HistoriaCreditoLambdaServerlessApiFunction:
     Type: AWS::Serverless::Function

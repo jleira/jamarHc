@@ -7,17 +7,26 @@ Globals:
   Function:
     Environment:
       Variables:
-        PRODUCT_ENDPOINT_HOST: Production
+        PRODUCT_ENDPOINT_HOST: 2-900461448.001
+        SIGNATURE_USER: 2-900461448.001
+        KEY_ALIAS: 1
+        SIGNATURE_PASS: D4t4cr3d1t0
+        KEY_PASS: Jamar01
+        DB_URL: 10.1.85.130
+        DB_USER: DATACREDITOWS
+        DB_PASSWORD: DATACREDITOWS
+        DB_PORT: 1521
+        DB_SID: orcl
 Resources:
   HistoriaCreditoLambdaServerlessApiFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: com.jamar.hc.LambdaHandler::handleRequest
       Runtime: java8
-      CodeUri: s3://aws-historia-credito-jamar/82af991e473d26c7deb466fc5e192c9f
+      CodeUri: s3://aws-historia-credito-jamar/51d60036dce9bdd150bf00bcaa1d2882
       MemorySize: 4080
       Policies: AWSLambdaBasicExecutionRole
-      Timeout: 240
+      Timeout: 600
       Events:
         ProxyResource:
           Type: Api
