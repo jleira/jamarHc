@@ -1,5 +1,7 @@
 package com.jamar.hc;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jamar.historiacreditowss.jamarhistoriadecredito.business.HistoriaCreditoService;
 import com.jamar.historiacreditowss.jamarhistoriadecredito.dto.DictumSolicitud;
 import com.jamar.historiacreditowss.jamarhistoriadecredito.dto.HistoriaSolicitud;
@@ -7,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Map;
 
 @RequestMapping("hc")
 @RestController
@@ -28,7 +35,9 @@ public class ServiceHistorialController {
     static {
         try {
 
-            System.setProperty("javax.net.ssl.keyStore", "/Users/jleira/u01/ssl/certificate/datacredito/preselect/mueblesjamar.com.co.p12");
+            System.out.println( ResourceUtils.getFile("classpath:certificate/mueblesjamar.com.co.p12").getAbsolutePath());
+            System.setProperty("javax.net.ssl.keyStore",
+                    ResourceUtils.getFile("classpath:certificate/mueblesjamar.com.co.p12").getAbsolutePath());
             //System.setProperty("javax.net.ssl.keyStore", "/u01/ssl/certificate/datacredito/hc/mueblesjamar.com.co.p12");
 
             System.setProperty("javax.net.ssl.keyStoreType", "pkcs12");
@@ -49,9 +58,10 @@ public class ServiceHistorialController {
     @PostMapping(
             value = "dictum"
     )
-    public String dictum(@RequestBody DictumSolicitud jsonParams, HttpServletRequest request) {
+    public String dictum(@RequestBody DictumSolicitud jsonParams, HttpServletRequest request) throws IOException {
         System.out.println(request);
-            return business.dictum(jsonParams);
+        System.out.println(new ObjectMapper().writeValueAsString(jsonParams));
+        return business.dictum(jsonParams);
     }
     
 

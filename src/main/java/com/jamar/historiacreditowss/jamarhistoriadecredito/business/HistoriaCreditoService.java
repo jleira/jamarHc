@@ -20,6 +20,7 @@ import com.jamar.historiacreditowss.jamarhistoriadecredito.pojo.Solicitud;
 //import utils.system;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.StringReader;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
@@ -48,6 +49,7 @@ import org.apache.wss4j.dom.WSConstants;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 @Service
 public class HistoriaCreditoService {
@@ -68,7 +70,7 @@ public class HistoriaCreditoService {
 
             Solicitud payload = new Solicitud();
 
-            payload.setEmpresa(jsonParams.getC_emp());
+            payload.setEmpresa(jsonParams.getcEmp());
             payload.setOrigen(jsonParams.getOrigen());
             payload.setProducto(jsonParams.getProducto());
             payload.setTipoIdentificacion(jsonParams.getTipoIdentificacion());
@@ -76,13 +78,13 @@ public class HistoriaCreditoService {
             payload.setUsuario(jsonParams.getUsuario());
             payload.setClave(jsonParams.getClave());
             payload.setPrimerApellido(jsonParams.getPrimerApellido());
-            payload.setSTRAID(jsonParams.getSTRAID());
-            payload.setSTRNAM(jsonParams.getSTRNAM());
-            payload.setFR_INGRESO(jsonParams.getFR_INGRESO());
-            payload.setFR_TASA_USURA(jsonParams.getFR_TASA_USURA());
-            payload.setFR_SEGMENTO_1(jsonParams.getFR_SEGMENTO_1());
-            payload.setFR_FORMATO(jsonParams.getFR_FORMATO());
-            payload.setENDPOINT(jsonParams.getURLSOAPSERVICE());
+            payload.setSTRAID(jsonParams.getsTraId());
+            payload.setSTRNAM(jsonParams.getsTrNam());
+            payload.setFR_INGRESO(jsonParams.getFrIngreso());
+            payload.setFR_TASA_USURA(jsonParams.getFrTasaUsura());
+            payload.setFR_SEGMENTO_1(jsonParams.getFrSegmento1());
+            payload.setFR_FORMATO(jsonParams.getFrFormato());
+            payload.setENDPOINT(jsonParams.getUrlSoapService());
 
             try {
                 if (jsonResult.get("success").getAsBoolean()) {
@@ -270,9 +272,9 @@ public class HistoriaCreditoService {
         return auditoria;
     }
     
-    public static String consumirHC(Solicitud payload) throws HC2PNJException {
+    public static String consumirHC(Solicitud payload) throws HC2PNJException, FileNotFoundException {
         //String propertistring = "/u01/ssl/certificate/datacredito/hc/crypto.properties";
-        String propertistring = "/Users/jleira/u01/ssl/certificate/datacredito/hc/crypto.properties";
+        String propertistring = ResourceUtils.getFile("classpath:crypto/crypto.properties").getAbsolutePath();
 
         JaxWsProxyFactoryBean wsProxyFactoryBean = new JaxWsProxyFactoryBean();
         //        wsProxyFactoryBean.setAddress("https://demo-servicesesb.datacredito.com.co:443/wss/dhws3/services/DHServicePlus");
@@ -360,7 +362,6 @@ public class HistoriaCreditoService {
             parametros.getParametro().add(parametro5);
             parametros.getParametro().add(parametro6);
             serviceparams.setParametros(parametros);
-
         }
         serviceparams.setClave(payload.getClave());
         serviceparams.setIdentificacion(payload.getIdentificacion());

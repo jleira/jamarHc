@@ -1,8 +1,8 @@
 package com.jamar.hc;
 
 public class Constants {
-    public static final String PROPERTIES_FILE_PATH = "wss.properties";
-    public static final String CRYPTO_PROPERTIES_FILE_NAME = "crypto.properties";
+    public static final String PROPERTIES_FILE_PATH = "crypto/wss.properties";
+    public static final String CRYPTO_PROPERTIES_FILE_NAME = "crypto/crypto.properties";
     public static final String OUTPUT_DIR = "src/main/java";
     public static final String COMPILE_DIR = "build/classes/java/main";
     public static final String PROTOCOL_PROP_NAME = "protocol";

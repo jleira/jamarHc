@@ -29,7 +29,7 @@ public class HistoriaCreditoHelper {
 
         try {
             // Se agregan los campos obligatorios para la peticion de la operacion
-            if (jsonData.getC_emp() == null || jsonData.getC_emp().equals("")) {
+            if (jsonData.getcEmp() == null || jsonData.getcEmp().equals("")) {
                 success = false;
                 errors.add("Entidad es requerida");
             }

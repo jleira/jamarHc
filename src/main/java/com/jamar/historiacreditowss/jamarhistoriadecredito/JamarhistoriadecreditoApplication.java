@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.HandlerAdapter;
 import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
     ServiceHistorialController.class,
     JpaConfig.class
 })
+@EnableWebMvc
 public class JamarhistoriadecreditoApplication extends SpringBootServletInitializer {
 
 

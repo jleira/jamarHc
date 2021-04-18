@@ -5,38 +5,46 @@
  */
 package com.jamar.historiacreditowss.jamarhistoriadecredito.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  *
  * @author jleira
  */
 public class DictumSolicitud {
-    private String c_emp;    
+    @JsonProperty( "c_emp")
+    private String cEmp;
     private String origen;    
     private String clave;    
     private String identificacion;    
     private String primerApellido;    
     private String producto;    
-    private int    tipoIdentificacion;    
-    private String usuario;    
-    private String STRAID;    
-    private String STRNAM;    
-    private String FR_INGRESO;    
-    private String FR_TASA_USURA;    
-    private String FR_SEGMENTO_1;    
-    private String FR_FORMATO;    
-    private String URLSOAPSERVICE;   
+    private int    tipoIdentificacion;
+    private String usuario;
+    @JsonProperty( "STRAID")
+    private String sTraId;
+    @JsonProperty( "STRNAM")
+    private String sTrNam;
+    @JsonProperty( "FR_INGRESO")
+    private String frIngreso;
+    @JsonProperty( "FR_TASA_USURA")
+    private String frTasaUsura;
+    @JsonProperty( "FR_SEGMENTO_1")
+    private String frSegmento1;
+    @JsonProperty( "FR_FORMATO")
+    private String frFormato;
+    @JsonProperty( "URLSOAPSERVICE")
+    private String urlSoapService;
 
     public DictumSolicitud() {
     }
 
-    
-    
-    public String getC_emp() {
-        return c_emp;
+    public String getcEmp() {
+        return cEmp;
     }
 
-    public void setC_emp(String c_emp) {
-        this.c_emp = c_emp;
+    public void setcEmp(String cEmp) {
+        this.cEmp = cEmp;
     }
 
     public String getOrigen() {
@@ -95,60 +103,59 @@ public class DictumSolicitud {
         this.usuario = usuario;
     }
 
-    public String getSTRAID() {
-        return STRAID;
+    public String getsTraId() {
+        return sTraId;
     }
 
-    public void setSTRAID(String STRAID) {
-        this.STRAID = STRAID;
+    public void setsTraId(String sTraId) {
+        this.sTraId = sTraId;
     }
 
-    public String getSTRNAM() {
-        return STRNAM;
+    public String getsTrNam() {
+        return sTrNam;
     }
 
-    public void setSTRNAM(String STRNAM) {
-        this.STRNAM = STRNAM;
+    public void setsTrNam(String sTrNam) {
+        this.sTrNam = sTrNam;
     }
 
-    public String getFR_INGRESO() {
-        return FR_INGRESO;
+    public String getFrIngreso() {
+        return frIngreso;
     }
 
-    public void setFR_INGRESO(String FR_INGRESO) {
-        this.FR_INGRESO = FR_INGRESO;
+    public void setFrIngreso(String frIngreso) {
+        this.frIngreso = frIngreso;
     }
 
-    public String getFR_TASA_USURA() {
-        return FR_TASA_USURA;
+    public String getFrTasaUsura() {
+        return frTasaUsura;
     }
 
-    public void setFR_TASA_USURA(String FR_TASA_USURA) {
-        this.FR_TASA_USURA = FR_TASA_USURA;
+    public void setFrTasaUsura(String frTasaUsura) {
+        this.frTasaUsura = frTasaUsura;
     }
 
-    public String getFR_SEGMENTO_1() {
-        return FR_SEGMENTO_1;
+    public String getFrSegmento1() {
+        return frSegmento1;
     }
 
-    public void setFR_SEGMENTO_1(String FR_SEGMENTO_1) {
-        this.FR_SEGMENTO_1 = FR_SEGMENTO_1;
+    public void setFrSegmento1(String frSegmento1) {
+        this.frSegmento1 = frSegmento1;
     }
 
-    public String getFR_FORMATO() {
-        return FR_FORMATO;
+    public String getFrFormato() {
+        return frFormato;
     }
 
-    public void setFR_FORMATO(String FR_FORMATO) {
-        this.FR_FORMATO = FR_FORMATO;
+    public void setFrFormato(String frFormato) {
+        this.frFormato = frFormato;
     }
 
-    public String getURLSOAPSERVICE() {
-        return URLSOAPSERVICE;
+    public String getUrlSoapService() {
+        return urlSoapService;
     }
 
-    public void setURLSOAPSERVICE(String URLSOAPSERVICE) {
-        this.URLSOAPSERVICE = URLSOAPSERVICE;
+    public void setUrlSoapService(String urlSoapService) {
+        this.urlSoapService = urlSoapService;
     }
-
 }
